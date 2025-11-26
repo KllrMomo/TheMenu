@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 export function RestaurantHomePage() { 
     return (
         <div className="px-4 py-6 flex flex-col items-center justify-center relative overflow-hidden">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-800 text-center mb-12">
+                Restaurant Dashboard
+            </h1>
             <Link to="/create-menu">
                 <button className="mb-6 bg-[#920728] text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
                     Create Menu
