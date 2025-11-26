@@ -7,6 +7,9 @@ import { RestaurantHomePage } from '../pages/RestaurantHomePage'
 import { CustomerLogIn } from '../pages/CustomerLogIn'
 import { AboutUs } from '../pages/AboutUs'
 import { User } from '../pages/User'
+import { CustomerSignUp } from '../pages/CustomerSignUp'
+import { CustomerHomePage } from '../pages/CustomerHomePage'
+import { ViewingPage } from '../pages/ViewingPage'
 
 export const router = createBrowserRouter([
   {
@@ -78,6 +81,36 @@ export const router = createBrowserRouter([
         element: <CustomerLogIn />,
       },
     ],
-  }
+  },
+  {
+    path: '/customer-signup',
+    element: <Layout />,
+    children: [
+      {        
+        index: true,
+        element: <CustomerSignUp />,
+      },
+    ],
+  },
+  {
+    path: '/customer-dashboard',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <CustomerHomePage />,
+      },
+    ],
+  },
+  {
+    path: '/restaurant/:id',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <ViewingPage />,
+      },
+    ],
+  },
 ])
 
