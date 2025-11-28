@@ -4,6 +4,7 @@ import { HomePage } from '../pages/HomePage'
 import { RestaurantLogIn } from '../pages/restaurant/RestaurantLogIn'
 import { RestaurantSignUp } from '../pages/restaurant/RestaurantSignUp'
 import { RestaurantHomePage } from '../pages/restaurant/RestaurantHomePage'
+import { RestaurantProfile } from '../pages/restaurant/RestaurantProfile'
 import { CustomerLogIn } from '../pages/customer/CustomerLogIn'
 import { AboutUs } from '../pages/AboutUs'
 import { User } from '../pages/User'
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/restaurant-login',
-    element: <Layout />,
+    element: <Layout/>,
     children: [
       {
         index: true,
@@ -72,6 +73,16 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <RestaurantHomePage />,
+      },
+    ],
+  },
+  {
+    path:'restaurant-profile',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <RestaurantProfile />,
       },
     ],
   },
