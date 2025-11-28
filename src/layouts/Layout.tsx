@@ -2,8 +2,8 @@ import { Outlet, Link } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react';
 
 export function Layout() { 
-  const accountType = "restaurant"; // This should be dynamically set based on user data
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const accountType = 'restaurant'; // 'restaurant' or 'customer'
+  const isLoggedIn = true; // Simulated login status
   const username = localStorage.getItem('username') || 'User';
   const pfp = localStorage.getItem('pfp') || 'https://i.imgur.com/4ZQZ4pD.png';
 
@@ -107,17 +107,10 @@ export function Layout() {
 
                     {/* Shared options */}
                     <Link
-                      to="/user"
+                      to="/restaurant-profile"
                       className="block px-4 py-2 hover:bg-gray-100"
                     >
                       Profile
-                    </Link>
-
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Settings
                     </Link>
 
                     <button
