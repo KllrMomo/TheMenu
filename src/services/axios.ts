@@ -34,5 +34,5 @@ function createApi(baseURL: string) {
   return api;
 }
 
-const api = createApi(import.meta.env.BASE_API_URL ?? "");
+const api = createApi(import.meta.env.VITE_BASE_API_URL ?? "");
 export default api;

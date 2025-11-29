@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSignup } from "../../services/query-hooks/mutations";
 import { useQueryClient } from "@tanstack/react-query";
@@ -81,6 +81,13 @@ export function CustomerSignUp() {
                     className="w-full px-4 py-3 rounded-md bg-white text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#920728] transition font-medium cursor-pointer" />
 
                 <div className="flex justify-center gap-8 mt-6">
+                    <Link to="/customer-login">
+                        <button 
+                            type="button"
+                            className="bg-gray-500 text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-gray-600 transition font-medium cursor-pointer">
+                            Back to Log In
+                        </button>
+                    </Link>
                     <button 
                         type="submit" 
                         disabled={signupMutation.isPending}

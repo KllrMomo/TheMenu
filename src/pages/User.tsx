@@ -11,17 +11,33 @@ export function User() {
         {/* BUTTONS */}
         <div className="relative z-10 flex flex-col items-center justify-center space-y-4">
             
-            <Link to="/customer-login" className="text-white text-lg hover:underline">
-                <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-                    Customer Log-In
-                </button>
-            </Link>
+            {/* Customer Section */}
+            <div className="mb-8 space-x-4">
+                <Link to="/customer-login" className="text-white text-lg hover:underline">
+                    <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
+                        Customer Log-In
+                    </button>
+                </Link>
+                <Link to="/customer-signup" className="text-white text-lg hover:underline">
+                    <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
+                        Customer Sign-Up
+                    </button>
+                </Link>
+            </div>
             
-            <Link to="/restaurant-login" className="text-white text-lg hover:underline">
-                <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-                    Restaurant Log-In
-                </button>
-            </Link>
+            {/* Restaurant Section */}
+            <div className="mb-8 space-x-4">
+                <Link to="/restaurant-login" className="text-white text-lg hover:underline">
+                    <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
+                        Restaurant Log-In
+                    </button>
+                </Link>
+                <Link to="/restaurant-signup" className="text-white text-lg hover:underline">
+                    <button className="w-64 py-3 mb-6 bg-[#920728] text-white text-lg rounded-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
+                        Restaurant Sign-Up
+                    </button>
+                </Link>
+            </div>
 
         </div>
     </div>
