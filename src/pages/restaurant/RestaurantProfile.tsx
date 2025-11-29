@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCurrentUser, useRestaurants } from "../../services/query-hooks/queries";
+import { findRestaurantByOwner, initializeRestaurantForm, isLoading as checkLoading, createImagePreviewUrl } from "../../services/utils";
 
 export function RestaurantProfile() {
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const { data: restaurants = [], isLoading: isLoadingRestaurants } = useRestaurants();
+
+  const userRestaurant = findRestaurantByOwner(restaurants, currentUser?.userId);
+
   const [logo, setLogo] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -11,9 +18,25 @@ export function RestaurantProfile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Initialize form with restaurant data
+  useEffect(() => {
+    const formData = initializeRestaurantForm(userRestaurant, currentUser);
+    setRestaurantName(formData.restaurantName);
+    setAddress(formData.address);
+    setEmail(formData.email);
+  }, [userRestaurant, currentUser]);
+
+  if (checkLoading(isLoadingUser, isLoadingRestaurants)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setLogo(URL.createObjectURL(file));
+    setLogo(createImagePreviewUrl(file));
   };
 
   return (
@@ -115,6 +138,10 @@ export function RestaurantProfile() {
         {/* BUTTONS */}
         <div className="flex justify-center gap-6 mt-8">
           <button
+            onClick={() => {
+              // Note: Update restaurant functionality requires a hook that doesn't exist yet
+              alert("Update restaurant functionality requires an update restaurant API endpoint and hook. See documentation for missing features.");
+            }}
             className="px-6 py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]"
           >
             Save Changes

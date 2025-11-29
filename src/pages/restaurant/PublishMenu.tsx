@@ -1,25 +1,53 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCurrentUser, useRestaurants, useFoodItems } from "../../services/query-hooks/queries";
+import { findRestaurantByOwner, createImagePreviewUrl, formatPrice } from "../../services/utils";
 
 export function PublishMenu() {
+    const { data: currentUser } = useCurrentUser();
+    const { data: restaurants = [] } = useRestaurants();
+
+    const userRestaurant = findRestaurantByOwner(restaurants, currentUser?.userId);
+
+    const { data: foodItems = [], isLoading: isLoadingFoodItems } = useFoodItems(userRestaurant?.restaurantId);
+
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            const file = URL.createObjectURL(event.target.files[0]);
-            setPreviewImage(file);
-        }
+        const file = event.target.files?.[0];
+        setPreviewImage(createImagePreviewUrl(file));
     };
 
     return (
         <div className="px-4 py-6 ">
             <h1 className="text-5xl font-bold text-center mb-10">Select the menu you want to publish</h1>
 
-            {/* Menu Cards */}
-            <div className="flex flex-wrap justify-center gap-10 mb-6">
-                <div className="w-60 h-80 bg-gray-300 rounded"></div>
-                <div className="w-60 h-80 bg-gray-300 rounded"></div>
-                <div className="w-60 h-80 bg-gray-300 rounded"></div>
-            </div>
+            {/* Menu Cards - Show food items as menu items */}
+            {isLoadingFoodItems ? (
+                <div className="text-center py-10">Loading menu items...</div>
+            ) : foodItems.length > 0 ? (
+                <div className="flex flex-wrap justify-center gap-10 mb-6">
+                    {foodItems.slice(0, 3).map((item) => (
+                        <div key={item.foodId} className="w-60 h-80 bg-white border border-gray-300 rounded p-4 shadow">
+                            <h3 className="font-semibold text-lg mb-2">{item.name}</h3>
+                            <p className="text-gray-600 mb-2">{formatPrice(item.price)}</p>
+                            {!item.inStock && (
+                                <span className="text-red-600 text-sm">Out of Stock</span>
+                            )}
+                        </div>
+                    ))}
+                    {foodItems.length === 0 && (
+                        <div className="w-60 h-80 bg-gray-300 rounded flex items-center justify-center text-gray-600">
+                            No menu items yet
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className="flex flex-wrap justify-center gap-10 mb-6">
+                    <div className="w-60 h-80 bg-gray-300 rounded flex items-center justify-center text-gray-600">
+                        No menu items available. Create some food items first.
+                    </div>
+                </div>
+            )}
 
             {/* Create New Menu */}
             <div className="text-center mb-16">
