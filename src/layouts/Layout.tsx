@@ -1,11 +1,24 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react';
+import { useCurrentUser } from '../services/query-hooks/queries';
+import { useQueryClient } from '@tanstack/react-query';
+import { 
+  getUsername, 
+  getAccountType, 
+  isLoggedIn, 
+  handleLogout as handleLogoutUtil,
+  getGreeting,
+  getGreetingPhrase
+} from '../services/utils';
 
 export function Layout() { 
-  const accountType = 'restaurant'; // 'restaurant' or 'customer'
-  const isLoggedIn = true; // Simulated login status
-  const username = localStorage.getItem('username') || 'User';
+  const { data: currentUser } = useCurrentUser();
+  const queryClient = useQueryClient();
+  const accountType = getAccountType();
+  const loggedIn = isLoggedIn();
+  const username = getUsername(currentUser);
   const pfp = localStorage.getItem('pfp') || 'https://i.imgur.com/4ZQZ4pD.png';
+  const navigate = useNavigate();
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -22,17 +35,13 @@ export function Layout() {
     };
   }, []);
 
-  let greeting =
-    accountType === 'restaurant'
-      ? 'Hello Restaurant Owner!'
-      : 'Hello Customer!';
+  const handleLogout = () => {
+    handleLogoutUtil(queryClient, navigate);
+    setOpenMenu(false);
+  };
 
-  let greetingPhrase;
-  if (accountType === 'restaurant') {
-    greetingPhrase = 'Your customers are ready to order';
-  } else {
-    greetingPhrase = 'What would you like to order?';
-  }
+  const greeting = getGreeting(accountType);
+  const greetingPhrase = getGreetingPhrase(accountType);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -72,7 +81,7 @@ export function Layout() {
             <div className="h-6 w-px bg-white"></div>
 
             {/* If NOT logged in — show login */}
-            {!isLoggedIn ? (
+            {!loggedIn ? (
               <>
                 <Link to="/user" className="text-white text-lg hover:underline">
                   Log In
@@ -114,10 +123,7 @@ export function Layout() {
                     </Link>
 
                     <button
-                      onClick={() => {
-                        localStorage.clear();
-                        window.location.reload();
-                      }}
+                      onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50"
                     >
                       Logout

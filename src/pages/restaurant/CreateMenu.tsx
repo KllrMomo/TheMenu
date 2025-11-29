@@ -1,10 +1,49 @@
 import { useState } from "react";
+import { useCurrentUser, useRestaurants } from "../../services/query-hooks/queries";
+import { useCreateFoodItem } from "../../services/query-hooks/mutations";
+import { findRestaurantByOwner, validateDishForm, handleAuthError } from "../../services/utils";
 
 export function CreateMenu() { 
-    const [restaurantName, setRestaurantName] = useState("");
+    const { data: currentUser } = useCurrentUser();
+    const { data: restaurants = [] } = useRestaurants();
+    const createFoodItemMutation = useCreateFoodItem();
+
+    const userRestaurant = findRestaurantByOwner(restaurants, currentUser?.userId);
+
+    const [restaurantName, setRestaurantName] = useState(userRestaurant?.name || "");
     const [sectionName, setSectionName] = useState("");
     const [dish, setDish] = useState({name:"", price:"", description:""});
     const [contact, setContact] = useState({phone:"", email:"", address:""});
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+
+    const handleAddDish = async () => {
+        if (!userRestaurant) {
+            setError("You need to create a restaurant first.");
+            return;
+        }
+
+        const validation = validateDishForm(dish);
+        if (!validation.isValid) {
+            setError(validation.error || "Please fill in dish name and price.");
+            return;
+        }
+
+        try {
+            await createFoodItemMutation.mutateAsync({
+                restaurantId: userRestaurant.restaurantId,
+                name: dish.name,
+                price: parseFloat(dish.price),
+                inStock: true,
+            });
+
+            setSuccess(`Dish "${dish.name}" added successfully!`);
+            setDish({name:"", price:"", description:""});
+            setError(null);
+        } catch (err) {
+            setError(handleAuthError(err));
+        }
+    };
 
     return (
         <div className="px-4 py-6">
@@ -18,8 +57,12 @@ export function CreateMenu() {
                         value={restaurantName}
                         onChange={(e) => setRestaurantName(e.target.value)}
                         placeholder="Enter restaurant name"
-                        className="w-full border px-4 py-3 rounded"
+                        disabled={!!userRestaurant}
+                        className="w-full border px-4 py-3 rounded disabled:bg-gray-100"
                     />
+                    {userRestaurant && (
+                        <p className="text-sm text-gray-600 mt-1">This is your registered restaurant.</p>
+                    )}
                 </div>
 
                 {/*Logo*/}
@@ -68,8 +111,22 @@ export function CreateMenu() {
                             className="border px-4 py-2 rounded w-full"
                         />
 
-                        <button className="bg-[#920728] text-white px-4 py-2 rounded hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer w-32">
-                            Add Dish
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                {error}
+                            </div>
+                        )}
+                        {success && (
+                            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                                {success}
+                            </div>
+                        )}
+                        <button 
+                            type="button"
+                            onClick={handleAddDish}
+                            disabled={createFoodItemMutation.isPending || !userRestaurant}
+                            className="bg-[#920728] text-white px-4 py-2 rounded hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer w-32 disabled:opacity-50 disabled:cursor-not-allowed">
+                            {createFoodItemMutation.isPending ? "Adding..." : "Add Dish"}
                         </button>
                     </div>
                 </div>
