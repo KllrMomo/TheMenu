@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { useRestaurants } from "../services/query-hooks/queries";
 
 export function HomePage() {
-  const { data: restaurants = [], isLoading } = useRestaurants();
+  const { data, isLoading } = useRestaurants();
+  const restaurants = Array.isArray(data) ? data : [];
 
   return (
     <div className="px-4 py-6">
