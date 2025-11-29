@@ -11,6 +11,7 @@ import type {
   CreateFoodItemRequest,
   UpdateFoodItemRequest,
   Cart,
+  CartItem,
   AddCartItemRequest,
   UpdateCartItemRequest,
   CheckoutResponse,
@@ -141,14 +142,14 @@ export class Api {
     foodId: string,
     quantity: number,
     userNote?: string,
-  ): Promise<Cart> {
+  ): Promise<CartItem> {
     const body: AddCartItemRequest = {
       restaurantId,
       foodId,
       quantity,
       userNote,
     };
-    const response = await api.post<Cart>(ENDPOINTS.CREATE_CART_ITEM, body);
+    const response = await api.post<CartItem>(ENDPOINTS.CREATE_CART_ITEM, body);
     return response.data;
   }
 
@@ -156,13 +157,13 @@ export class Api {
     itemId: string,
     quantity?: number,
     userNote?: string,
-  ): Promise<Cart> {
+  ): Promise<CartItem> {
     const body: UpdateCartItemRequest = {
       quantity,
       userNote,
     };
     const endpoint = ENDPOINTS.UPDATE_CART_ITEM.replace(":itemId", itemId);
-    const response = await api.patch<Cart>(endpoint, body);
+    const response = await api.patch<CartItem>(endpoint, body);
     return response.data;
   }
 

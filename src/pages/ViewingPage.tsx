@@ -1,9 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MenuImage from "../assets/images/Menu.png";
 import { useState } from "react";
 
 export function ViewingPage() {
-    const restaurantId = useParams();
+    const { restaurantId } = useParams();
     const [open, setOpen] = useState(false);
 
     return (

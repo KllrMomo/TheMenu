@@ -18,20 +18,25 @@ export interface AuthResponse {
 
 // User Types
 export interface User {
-  id: string;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;
+  createdAt?: string; // ISO 8601 datetime
+  updatedAt?: string; // ISO 8601 datetime
   // password is not included in user object
 }
 
 // Restaurant Types
 export interface Restaurant {
-  id: string;
+  restaurantId: string;
+  ownerId: string;
   name: string;
   address: string;
-  owner: User;
-  foodItems?: FoodItem[];
+  createdAt?: string; // ISO 8601 datetime
+  updatedAt?: string; // ISO 8601 datetime
+  owner?: User; // Nested owner information
+  foodItems?: FoodItem[]; // Nested food items for GET /api/restaurants/:id
 }
 
 export interface CreateRestaurantRequest {
@@ -41,12 +46,14 @@ export interface CreateRestaurantRequest {
 
 // Food Item Types
 export interface FoodItem {
-  id: string;
+  foodId: string;
   restaurantId: string;
   name: string;
   price: number;
   inStock: boolean;
-  restaurant?: Restaurant;
+  createdAt?: string; // ISO 8601 datetime
+  updatedAt?: string; // ISO 8601 datetime
+  restaurant?: Restaurant; // Nested restaurant information for GET /api/food-items/:id
 }
 
 export interface CreateFoodItemRequest {
@@ -64,20 +71,24 @@ export interface UpdateFoodItemRequest {
 
 // Shopping Cart Types
 export interface CartItem {
-  id: string;
-  restaurantId: string;
+  cartItemId: string;
+  cartId: string;
   foodId: string;
   quantity: number;
-  userNote?: string;
-  restaurant?: Restaurant;
-  foodItem?: FoodItem;
+  userNote?: string | null;
+  createdAt?: string; // ISO 8601 datetime
+  updatedAt?: string; // ISO 8601 datetime
+  foodItem?: FoodItem; // Nested food item information
 }
 
 export interface Cart {
-  id: string;
+  cartId: string;
   userId: string;
-  items: CartItem[];
-  restaurant?: Restaurant;
+  restaurantId: string;
+  createdAt?: string; // ISO 8601 datetime
+  updatedAt?: string; // ISO 8601 datetime
+  restaurant?: Restaurant; // Nested restaurant information
+  items: CartItem[]; // Nested cart items
 }
 
 export interface AddCartItemRequest {
