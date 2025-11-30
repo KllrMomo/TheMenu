@@ -8,7 +8,9 @@ import { ViewingPage } from "../pages/ViewingPage";
 import { CustomerHomePage } from "../pages/customer/CustomerHomePage";
 import { CustomerLogIn } from "../pages/customer/CustomerLogIn";
 import { CustomerSignUp } from "../pages/customer/CustomerSignUp";
+import { EditCustomerInfo } from "../pages/customer/EditCustomerInfo";
 import { CreateMenu } from "../pages/restaurant/CreateMenu";
+import { EditMenu } from "../pages/restaurant/EditMenu";
 import { PublishMenu } from "../pages/restaurant/PublishMenu";
 import { RestaurantHomePage } from "../pages/restaurant/RestaurantHomePage";
 import { RestaurantLogIn } from "../pages/restaurant/RestaurantLogIn";
@@ -78,7 +80,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "restaurant-profile",
+    path: "/restaurant-profile",
     element: <Layout />,
     children: [
       {
@@ -94,6 +96,16 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <CreateMenu />,
+      },
+    ],
+  },
+  {
+    path: "/edit-menu",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <EditMenu />,
       },
     ],
   },
@@ -144,6 +156,16 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <CustomerHomePage />,
+      },
+    ],
+  },
+  {
+    path: "/customer-profile",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <EditCustomerInfo />,
       },
     ],
   },

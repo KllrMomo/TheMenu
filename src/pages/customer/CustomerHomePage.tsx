@@ -27,10 +27,16 @@ export function CustomerHomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
-      <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center mb-12">
-        Welcome back, <br />{" "}
-        <span className="text-[#920728] text-2xl md:text-4xl mb-14">{username}</span>
-      </h2>
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-800">
+          Welcome back, <span className="text-[#920728] text-2xl md:text-4xl">{username}</span>
+        </h2>
+        <Link
+          to="/customer-profile"
+          className="bg-[#920728] text-white px-6 py-3 rounded-2xl text-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
+          Edit Profile
+        </Link>
+      </div>
 
       {isLoadingRestaurants ? (
         <div className="text-center text-gray-600 py-10">Loading...</div>

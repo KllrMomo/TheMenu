@@ -102,13 +102,27 @@ export function Layout() {
                           className="block px-4 py-2 hover:bg-gray-100">
                           Dashboard
                         </Link>
+                        <Link
+                          to="/restaurant-profile"
+                          className="block px-4 py-2 hover:bg-gray-100">
+                          Edit Restaurant Profile
+                        </Link>
                       </>
                     )}
 
-                    {/* Shared options */}
-                    <Link to="/restaurant-profile" className="block px-4 py-2 hover:bg-gray-100">
-                      Profile
-                    </Link>
+                    {/* Customer options */}
+                    {accountType === "customer" && (
+                      <>
+                        <Link
+                          to="/customer-dashboard"
+                          className="block px-4 py-2 hover:bg-gray-100">
+                          Dashboard
+                        </Link>
+                        <Link to="/customer-profile" className="block px-4 py-2 hover:bg-gray-100">
+                          Edit Profile
+                        </Link>
+                      </>
+                    )}
 
                     <button
                       onClick={handleLogout}
