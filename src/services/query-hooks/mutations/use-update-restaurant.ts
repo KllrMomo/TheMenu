@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Api } from "../../api";
-import type { Restaurant, UpdateRestaurantRequest } from "../../api_types";
+import type { Restaurant } from "../../api_types";
 import { QUERY_KEYS } from "../query-keys";
 
 interface UpdateRestaurantParams {
