@@ -31,5 +31,3 @@ export const useRestaurantByOwner = () => {
     throwOnError: false,
   });
 };
-
-

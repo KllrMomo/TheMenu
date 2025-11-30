@@ -12,8 +12,8 @@ function createApi(baseURL: string) {
     (config) => {
       // Don't send token for public endpoints that don't require authentication
       const publicEndpoints = ["/api/restaurants"];
-      const isPublicEndpoint = publicEndpoints.some((endpoint) => 
-        config.url?.includes(endpoint) && config.method?.toLowerCase() === "get"
+      const isPublicEndpoint = publicEndpoints.some(
+        (endpoint) => config.url?.includes(endpoint) && config.method?.toLowerCase() === "get"
       );
 
       // Add authentication token if available and endpoint is not public
