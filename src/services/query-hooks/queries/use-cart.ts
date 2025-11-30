@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { Api } from "../../api";
 import type { Cart } from "../../api_types";
 import { QUERY_KEYS } from "../query-keys";
@@ -9,4 +10,3 @@ export const useCart = () => {
     queryFn: () => Api.getCart(),
   });
 };
-

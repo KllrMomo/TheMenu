@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { Api } from "../../api";
 import type { CheckoutResponse } from "../../api_types";
 import { QUERY_KEYS } from "../query-keys";
@@ -14,4 +15,3 @@ export const useCheckout = () => {
     },
   });
 };
-

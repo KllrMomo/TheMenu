@@ -1,28 +1,28 @@
-import api from "./axios";
-import { ENDPOINTS } from "./endpoints";
 import type {
-  RegisterRequest,
-  LoginRequest,
+  AddCartItemRequest,
   AuthResponse,
-  User,
-  Restaurant,
-  CreateRestaurantRequest,
-  FoodItem,
-  CreateFoodItemRequest,
-  UpdateFoodItemRequest,
   Cart,
   CartItem,
-  AddCartItemRequest,
-  UpdateCartItemRequest,
   CheckoutResponse,
+  CreateFoodItemRequest,
+  CreateRestaurantRequest,
+  FoodItem,
+  LoginRequest,
+  RegisterRequest,
+  Restaurant,
+  UpdateCartItemRequest,
+  UpdateFoodItemRequest,
+  User,
 } from "./api_types";
+import api from "./axios";
+import { ENDPOINTS } from "./endpoints";
 
 export class Api {
   static async register(
     firstName: string,
     lastName: string,
     email: string,
-    password: string,
+    password: string
   ): Promise<AuthResponse> {
     const body: RegisterRequest = {
       firstName,
@@ -37,10 +37,7 @@ export class Api {
     return response.data;
   }
 
-  static async login(
-    email: string,
-    password: string,
-  ): Promise<AuthResponse> {
+  static async login(email: string, password: string): Promise<AuthResponse> {
     const body: LoginRequest = {
       email,
       password,
@@ -76,10 +73,7 @@ export class Api {
     return response.data;
   }
 
-  static async createRestaurant(
-    name: string,
-    address: string,
-  ): Promise<Restaurant> {
+  static async createRestaurant(name: string, address: string): Promise<Restaurant> {
     const body: CreateRestaurantRequest = {
       name,
       address,
@@ -104,7 +98,7 @@ export class Api {
     restaurantId: string,
     name: string,
     price: number,
-    inStock?: boolean,
+    inStock?: boolean
   ): Promise<FoodItem> {
     const body: CreateFoodItemRequest = {
       restaurantId,
@@ -120,7 +114,7 @@ export class Api {
     id: string,
     name?: string,
     price?: number,
-    inStock?: boolean,
+    inStock?: boolean
   ): Promise<FoodItem> {
     const body: UpdateFoodItemRequest = {
       name,
@@ -141,7 +135,7 @@ export class Api {
     restaurantId: string,
     foodId: string,
     quantity: number,
-    userNote?: string,
+    userNote?: string
   ): Promise<CartItem> {
     const body: AddCartItemRequest = {
       restaurantId,
@@ -156,7 +150,7 @@ export class Api {
   static async updateCartItem(
     itemId: string,
     quantity?: number,
-    userNote?: string,
+    userNote?: string
   ): Promise<CartItem> {
     const body: UpdateCartItemRequest = {
       quantity,

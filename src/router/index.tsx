@@ -1,23 +1,24 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { Layout } from '../layouts/Layout'
-import { HomePage } from '../pages/HomePage'
-import { RestaurantLogIn } from '../pages/restaurant/RestaurantLogIn'
-import { RestaurantSignUp } from '../pages/restaurant/RestaurantSignUp'
-import { RestaurantHomePage } from '../pages/restaurant/RestaurantHomePage'
-import { RestaurantProfile } from '../pages/restaurant/RestaurantProfile'
-import { CustomerLogIn } from '../pages/customer/CustomerLogIn'
-import { AboutUs } from '../pages/AboutUs'
-import { User } from '../pages/User'
-import { CustomerSignUp } from '../pages/customer/CustomerSignUp'
-import { CustomerHomePage } from '../pages/customer/CustomerHomePage'
-import { ViewingPage } from '../pages/ViewingPage'
-import { CreateMenu } from '../pages/restaurant/CreateMenu'
-import { PublishMenu } from '../pages/restaurant/PublishMenu'
-import { ReviewsComments } from '../pages/restaurant/ReviewsComments'
+import { createBrowserRouter } from "react-router-dom";
+
+import { Layout } from "../layouts/Layout";
+import { AboutUs } from "../pages/AboutUs";
+import { HomePage } from "../pages/HomePage";
+import { User } from "../pages/User";
+import { ViewingPage } from "../pages/ViewingPage";
+import { CustomerHomePage } from "../pages/customer/CustomerHomePage";
+import { CustomerLogIn } from "../pages/customer/CustomerLogIn";
+import { CustomerSignUp } from "../pages/customer/CustomerSignUp";
+import { CreateMenu } from "../pages/restaurant/CreateMenu";
+import { PublishMenu } from "../pages/restaurant/PublishMenu";
+import { RestaurantHomePage } from "../pages/restaurant/RestaurantHomePage";
+import { RestaurantLogIn } from "../pages/restaurant/RestaurantLogIn";
+import { RestaurantProfile } from "../pages/restaurant/RestaurantProfile";
+import { RestaurantSignUp } from "../pages/restaurant/RestaurantSignUp";
+import { ReviewsComments } from "../pages/restaurant/ReviewsComments";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       {
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/about-us',
+    path: "/about-us",
     element: <Layout />,
     children: [
       {
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/user',
+    path: "/user",
     element: <Layout />,
     children: [
       {
@@ -47,8 +48,8 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/restaurant-login',
-    element: <Layout/>,
+    path: "/restaurant-login",
+    element: <Layout />,
     children: [
       {
         index: true,
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/restaurant-signup',
+    path: "/restaurant-signup",
     element: <Layout />,
     children: [
       {
@@ -67,7 +68,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/restaurant-dashboard',
+    path: "/restaurant-dashboard",
     element: <Layout />,
     children: [
       {
@@ -77,7 +78,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:'restaurant-profile',
+    path: "restaurant-profile",
     element: <Layout />,
     children: [
       {
@@ -87,7 +88,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/create-menu',
+    path: "/create-menu",
     element: <Layout />,
     children: [
       {
@@ -97,7 +98,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:'/publish-menu',
+    path: "/publish-menu",
     element: <Layout />,
     children: [
       {
@@ -107,7 +108,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/reviews-comments',
+    path: "/reviews-comments",
     element: <Layout />,
     children: [
       {
@@ -117,7 +118,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/customer-login',
+    path: "/customer-login",
     element: <Layout />,
     children: [
       {
@@ -127,17 +128,17 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/customer-signup',
+    path: "/customer-signup",
     element: <Layout />,
     children: [
-      {        
+      {
         index: true,
         element: <CustomerSignUp />,
       },
     ],
   },
   {
-    path: '/customer-dashboard',
+    path: "/customer-dashboard",
     element: <Layout />,
     children: [
       {
@@ -147,7 +148,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/restaurant/:id',
+    path: "/restaurant/:id",
     element: <Layout />,
     children: [
       {
@@ -156,5 +157,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
-
+]);

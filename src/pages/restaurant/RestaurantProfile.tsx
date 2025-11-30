@@ -1,6 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { useCurrentUser, useRestaurants } from "../../services/query-hooks/queries";
-import { findRestaurantByOwner, initializeRestaurantForm, isLoading as checkLoading, createImagePreviewUrl } from "../../services/utils";
+import {
+  isLoading as checkLoading,
+  createImagePreviewUrl,
+  findRestaurantByOwner,
+  initializeRestaurantForm,
+} from "../../services/utils";
 
 export function RestaurantProfile() {
   const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
@@ -41,10 +47,8 @@ export function RestaurantProfile() {
 
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-4">
-
       <div className="w-full max-w-6xl mt-10">
         <div className="flex flex-col md:flex-row gap-10">
-
           {/* Image Upload */}
           <div className="flex flex-col items-center w-full md:w-1/3">
             <div className="w-50 h-50 bg-gray-300 rounded-md overflow-hidden flex items-center justify-center">
@@ -56,12 +60,7 @@ export function RestaurantProfile() {
             </div>
 
             <label className="mt-4 w-full">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleLogoUpload}
-              />
+              <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
 
               <div className="cursor-pointer w-full text-center py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]">
                 Upload Logo
@@ -71,7 +70,6 @@ export function RestaurantProfile() {
 
           {/* RIGHT SIDE — FORM */}
           <div className="w-full md:w-2/3">
-
             {/* Restaurant Name */}
             <label className="font-semibold">Restaurant Name:</label>
             <input
@@ -127,8 +125,7 @@ export function RestaurantProfile() {
               <button
                 type="button"
                 className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
-              >
+                onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
@@ -140,16 +137,15 @@ export function RestaurantProfile() {
           <button
             onClick={() => {
               // Note: Update restaurant functionality requires a hook that doesn't exist yet
-              alert("Update restaurant functionality requires an update restaurant API endpoint and hook. See documentation for missing features.");
+              alert(
+                "Update restaurant functionality requires an update restaurant API endpoint and hook. See documentation for missing features."
+              );
             }}
-            className="px-6 py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]"
-          >
+            className="px-6 py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]">
             Save Changes
           </button>
 
-          <button
-            className="px-6 py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]"
-          >
+          <button className="px-6 py-2 border rounded-md font-medium bg-[#920728] text-white hover:bg-[#eae4e4] hover:text-[#920728]">
             Cancel Changes
           </button>
         </div>

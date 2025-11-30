@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { Api } from "../../api";
 import type { FoodItem } from "../../api_types";
 import { QUERY_KEYS } from "../query-keys";
@@ -28,4 +29,3 @@ export const useUpdateFoodItem = () => {
     },
   });
 };
-

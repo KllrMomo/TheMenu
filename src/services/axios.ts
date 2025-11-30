@@ -19,7 +19,7 @@ function createApi(baseURL: string) {
     },
     (error) => {
       return Promise.reject(error);
-    },
+    }
   );
 
   api.interceptors.response.use(
@@ -28,7 +28,7 @@ function createApi(baseURL: string) {
     },
     (error) => {
       return Promise.reject(error);
-    },
+    }
   );
 
   return api;

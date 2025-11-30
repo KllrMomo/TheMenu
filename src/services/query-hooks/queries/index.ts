@@ -4,4 +4,3 @@ export { useRestaurant } from "./use-restaurant";
 export { useFoodItems } from "./use-food-items";
 export { useFoodItem } from "./use-food-item";
 export { useCart } from "./use-cart";
-

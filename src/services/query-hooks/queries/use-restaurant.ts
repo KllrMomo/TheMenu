@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { Api } from "../../api";
 import type { Restaurant } from "../../api_types";
 import { QUERY_KEYS } from "../query-keys";
@@ -13,4 +14,3 @@ export const useRestaurant = (id: string | undefined) => {
     enabled: !!id,
   });
 };
-

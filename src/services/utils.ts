@@ -1,5 +1,5 @@
-import type { User, Restaurant, AuthResponse } from "./api_types";
 import { Api } from "./api";
+import type { AuthResponse, Restaurant, User } from "./api_types";
 
 /**
  * Find a restaurant owned by a specific user
@@ -55,7 +55,10 @@ export function handleLogout(
 /**
  * Store authentication data in localStorage after login/signup
  */
-export function storeAuthData(authResponse: AuthResponse, accountType?: "restaurant" | "customer"): void {
+export function storeAuthData(
+  authResponse: AuthResponse,
+  accountType?: "restaurant" | "customer"
+): void {
   localStorage.setItem("username", `${authResponse.user.firstName} ${authResponse.user.lastName}`);
   localStorage.setItem("userId", authResponse.user.userId);
   if (accountType) {
@@ -89,9 +92,7 @@ export function getRecommendedRestaurants(
 /**
  * Create image preview URL from file input
  */
-export function createImagePreviewUrl(
-  file: File | null | undefined
-): string | null {
+export function createImagePreviewUrl(file: File | null | undefined): string | null {
   if (!file) return null;
   return URL.createObjectURL(file);
 }
@@ -170,9 +171,7 @@ export function initializeRestaurantForm(
  * Get greeting text based on account type
  */
 export function getGreeting(accountType: "restaurant" | "customer"): string {
-  return accountType === "restaurant"
-    ? "Hello Restaurant Owner!"
-    : "Hello Customer!";
+  return accountType === "restaurant" ? "Hello Restaurant Owner!" : "Hello Customer!";
 }
 
 /**
@@ -200,4 +199,3 @@ export function handleAuthError(error: unknown): string {
   }
   return "An unexpected error occurred. Please try again.";
 }
-

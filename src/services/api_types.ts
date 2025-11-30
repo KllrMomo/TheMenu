@@ -106,4 +106,3 @@ export interface UpdateCartItemRequest {
 export interface CheckoutResponse {
   message: string;
 }
-

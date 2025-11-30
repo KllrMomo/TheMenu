@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import { useRestaurants } from "../services/query-hooks/queries";
 
 export function HomePage() {
@@ -8,12 +9,8 @@ export function HomePage() {
   return (
     <div className="px-4 py-6">
       <div className="border-4 border-dashed border-gray-200 rounded-lg p-8 mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Welcome to The Menu
-        </h1>
-        <p className="text-gray-600">
-          Discover amazing restaurants and explore their menus.
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome to The Menu</h1>
+        <p className="text-gray-600">Discover amazing restaurants and explore their menus.</p>
       </div>
 
       {isLoading ? (
@@ -38,5 +35,5 @@ export function HomePage() {
         </div>
       )}
     </div>
-  )
+  );
 }
