@@ -53,18 +53,62 @@ export function handleLogout(
 }
 
 /**
+ * Validate token before storing
+ * Checks if token is non-empty, not just whitespace, and optionally validates JWT format
+ */
+export function validateToken(token: string | null | undefined): boolean {
+  if (!token || typeof token !== "string") {
+    return false;
+  }
+
+  const trimmedToken = token.trim();
+  if (!trimmedToken) {
+    return false;
+  }
+
+  // Basic JWT format validation (3 parts separated by dots)
+  // This is optional but helps catch malformed tokens early
+  const jwtParts = trimmedToken.split(".");
+  if (jwtParts.length !== 3) {
+    // Not a JWT, but might still be valid - log warning but allow
+    console.warn("Token does not appear to be in JWT format");
+  }
+
+  return true;
+}
+
+/**
  * Store authentication data in localStorage after login/signup
+ * Validates token before storing and throws error if token is missing or invalid
  */
 export function storeAuthData(
   authResponse: AuthResponse,
   accountType?: "restaurant" | "customer"
 ): void {
+  // Validate token before storing
+  if (!validateToken(authResponse.token)) {
+    const errorMessage = "Authentication failed: No valid token received from server";
+    console.error(errorMessage, { authResponse });
+    throw new Error(errorMessage);
+  }
+
+  // Store user data
   localStorage.setItem("username", `${authResponse.user.firstName} ${authResponse.user.lastName}`);
   localStorage.setItem("userId", authResponse.user.userId);
-  if (authResponse.token) {
-    // Trim and store the token to avoid whitespace issues
-    localStorage.setItem("token", authResponse.token.trim());
+
+  // Trim and store the token to avoid whitespace issues
+  // We know it's valid at this point due to validation above
+  const trimmedToken = authResponse.token.trim();
+  localStorage.setItem("token", trimmedToken);
+
+  // Verify token was stored successfully (synchronous check)
+  const storedToken = localStorage.getItem("token");
+  if (!storedToken || storedToken !== trimmedToken) {
+    const errorMessage = "Failed to store authentication token";
+    console.error(errorMessage);
+    throw new Error(errorMessage);
   }
+
   if (accountType) {
     localStorage.setItem("accountType", accountType);
   }

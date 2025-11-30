@@ -33,10 +33,16 @@ export class Api {
       password,
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.REGISTER, body);
-    if (response.data.token) {
-      // Trim and store the token to avoid whitespace issues
-      localStorage.setItem("token", response.data.token.trim());
+    
+    // Validate that token exists in response
+    if (!response.data.token) {
+      const errorMessage = "Registration failed: No token received from server";
+      console.error(errorMessage, { response: response.data });
+      throw new Error(errorMessage);
     }
+
+    // Token storage is handled by storeAuthData() in the calling component
+    // This ensures proper validation and prevents race conditions
     return response.data;
   }
 
@@ -46,10 +52,16 @@ export class Api {
       password,
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.LOGIN, body);
-    if (response.data.token) {
-      // Trim and store the token to avoid whitespace issues
-      localStorage.setItem("token", response.data.token.trim());
+    
+    // Validate that token exists in response
+    if (!response.data.token) {
+      const errorMessage = "Login failed: No token received from server";
+      console.error(errorMessage, { response: response.data });
+      throw new Error(errorMessage);
     }
+
+    // Token storage is handled by storeAuthData() in the calling component
+    // This ensures proper validation and prevents race conditions
     return response.data;
   }
 

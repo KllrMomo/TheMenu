@@ -24,7 +24,20 @@ function createApi(baseURL: string) {
           const trimmedToken = token.trim();
           if (trimmedToken) {
             config.headers.Authorization = `Bearer ${trimmedToken}`;
+          } else {
+            // Token exists but is empty/whitespace - log warning
+            console.warn("Token found in localStorage but is empty or whitespace only", {
+              url: config.url,
+              method: config.method,
+            });
           }
+        } else {
+          // Token is missing for authenticated endpoint - log warning
+          // Note: We don't throw here as some endpoints might handle 401 gracefully
+          console.warn("No authentication token found for authenticated endpoint", {
+            url: config.url,
+            method: config.method,
+          });
         }
       }
       return config;

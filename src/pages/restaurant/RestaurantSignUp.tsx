@@ -29,17 +29,21 @@ export function RestaurantSignUp() {
         password,
       });
 
+      // Store auth data (validates token and ensures it's stored before proceeding)
       storeAuthData(authResponse, "restaurant");
 
-      // Then, create the restaurant
+      // Verify token is available before making authenticated requests
+      // This ensures no race condition occurs
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication token was not stored correctly");
+      }
+
+      // Then, create the restaurant (token is now guaranteed to be available)
       await createRestaurantMutation.mutateAsync({
         name: restaurantName,
         address,
       });
-
-      // Small delay to ensure token is fully available before navigation
-      // This prevents 401 errors when the dashboard tries to fetch data
-      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Navigate to restaurant dashboard
       navigate("/restaurant-dashboard");
