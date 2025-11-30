@@ -27,24 +27,19 @@ export function RestaurantHomePage() {
         </div>
       )}
       <div className="flex flex-col gap-4 w-full max-w-md">
-        <Link to="/create-menu">
-          <button className="w-full bg-[#920728] text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-            Add Menu Item
-          </button>
-        </Link>
         <Link to="/edit-menu">
           <button className="w-full bg-[#920728] text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-            Edit Menu
+            Manage Menu
+          </button>
+        </Link>
+        <Link to="/publish-menu">
+          <button className="w-full bg-green-600 text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-green-700 transition font-medium cursor-pointer">
+            Preview Menu
           </button>
         </Link>
         <Link to="/restaurant-profile">
           <button className="w-full bg-[#920728] text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
             Edit Restaurant Profile
-          </button>
-        </Link>
-        <Link to="/publish-menu">
-          <button className="w-full bg-[#920728] text-white px-12 py-4 rounded-2xl text-xl shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-            Publish Menu
           </button>
         </Link>
         <Link to="/reviews-comments">

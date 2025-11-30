@@ -33,7 +33,7 @@ export class Api {
       password,
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.REGISTER, body);
-    
+
     // Validate that token exists in response
     if (!response.data.token) {
       const errorMessage = "Registration failed: No token received from server";
@@ -52,7 +52,7 @@ export class Api {
       password,
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.LOGIN, body);
-    
+
     // Validate that token exists in response
     if (!response.data.token) {
       const errorMessage = "Login failed: No token received from server";
