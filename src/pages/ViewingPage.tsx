@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import MenuImage from "../assets/images/Menu.png";
 import { useFoodItems, useRestaurant } from "../services/query-hooks/queries";
 import { isLoading as checkLoading, formatPrice } from "../services/utils";
 
 export function ViewingPage() {
-  const { restaurantId } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [open, setOpen] = useState(false);
 
-  const { data: restaurant, isLoading: isLoadingRestaurant } = useRestaurant(restaurantId);
-  const { data: foodItems = [], isLoading: isLoadingFoodItems } = useFoodItems(restaurantId);
+  const {
+    data: restaurant,
+    isLoading: isLoadingRestaurant,
+    error: restaurantError,
+  } = useRestaurant(id);
+  const { data: foodItems = [], isLoading: isLoadingFoodItems } = useFoodItems(id);
 
   if (checkLoading(isLoadingRestaurant, isLoadingFoodItems)) {
     return (
@@ -20,10 +24,31 @@ export function ViewingPage() {
     );
   }
 
-  if (!restaurant) {
+  if (!id) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="text-center text-red-600">Restaurant not found.</div>
+        <div className="text-center">
+          <p className="text-red-600 text-lg font-semibold mb-4">Invalid restaurant ID.</p>
+          <Link to="/" className="text-[#920728] underline hover:text-[#6e0520] font-medium">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (restaurantError || !restaurant) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="text-center">
+          <p className="text-red-600 text-lg font-semibold mb-4">Restaurant not found.</p>
+          <p className="text-gray-600 mb-4">
+            The restaurant you're looking for doesn't exist or may have been removed.
+          </p>
+          <Link to="/" className="text-[#920728] underline hover:text-[#6e0520] font-medium">
+            Return to Home
+          </Link>
+        </div>
       </div>
     );
   }
@@ -86,9 +111,7 @@ export function ViewingPage() {
         <h2 className="text-xl font-semibold mb-4">Reviews</h2>
         {/* Note: Reviews functionality would require a separate reviews API endpoint */}
         <div className="bg-white shadow p-4 rounded mb-4">
-          <p className="text-gray-600 text-center py-4">
-            Reviews feature coming soon. This will require a reviews/comments API endpoint.
-          </p>
+          <p className="text-gray-600 text-center py-4">Reviews feature coming soon.</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { useRestaurants } from "../services/query-hooks/queries";
+import { RestaurantCard } from "./restaurant/RestaurantCard";
 
 export function HomePage() {
   const { data, isLoading } = useRestaurants();
@@ -20,12 +21,14 @@ export function HomePage() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Featured Restaurants</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {restaurants.map((restaurant) => (
-              <Link key={restaurant.restaurantId} to={`/restaurant/${restaurant.restaurantId}`}>
-                <div className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition cursor-pointer">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{restaurant.name}</h3>
-                  <p className="text-gray-700">{restaurant.address}</p>
-                </div>
-              </Link>
+              <div className="">
+                <Link
+                  key={restaurant.restaurantId}
+                  to={`/restaurant/${restaurant.restaurantId}`}
+                  className="shrink-0">
+                  <RestaurantCard name={restaurant.name} address={restaurant.address} />
+                </Link>
+              </div>
             ))}
           </div>
         </div>

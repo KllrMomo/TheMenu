@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useCreateRestaurant, useSignup } from "../../services/query-hooks/mutations";
+import { useSignup } from "../../services/query-hooks/mutations";
 import { isLoading as checkLoading, handleAuthError, storeAuthData } from "../../services/utils";
 
 export function RestaurantSignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [restaurantName, setRestaurantName] = useState("");
-  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const signupMutation = useSignup();
-  const createRestaurantMutation = useCreateRestaurant();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,20 +36,15 @@ export function RestaurantSignUp() {
         throw new Error("Authentication token was not stored correctly");
       }
 
-      // Then, create the restaurant (token is now guaranteed to be available)
-      await createRestaurantMutation.mutateAsync({
-        name: restaurantName,
-        address,
-      });
-
-      // Navigate to restaurant dashboard
-      navigate("/restaurant-dashboard");
+      // Navigate to restaurant profile page to create restaurant
+      // This avoids asking for restaurant info twice (once in signup, once in create)
+      navigate("/restaurant-profile");
     } catch (err) {
       setError(handleAuthError(err));
     }
   };
 
-  const isLoading = checkLoading(signupMutation.isPending, createRestaurantMutation.isPending);
+  const isLoading = checkLoading(signupMutation.isPending);
 
   return (
     <div className="px-4 py-6">
@@ -82,22 +74,6 @@ export function RestaurantSignUp() {
           placeholder="Last Name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          required
-          className="w-full px-4 py-3 rounded-md bg-white text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#920728] transition font-medium cursor-pointer"
-        />
-        <input
-          type="text"
-          placeholder="Restaurant Name"
-          value={restaurantName}
-          onChange={(e) => setRestaurantName(e.target.value)}
-          required
-          className="w-full px-4 py-3 rounded-md bg-white text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#920728] transition font-medium cursor-pointer"
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
           required
           className="w-full px-4 py-3 rounded-md bg-white text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#920728] transition font-medium cursor-pointer"
         />

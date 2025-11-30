@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { useUpdateRestaurant } from "../../services/query-hooks/mutations";
+import {
+  useCreateRestaurant,
+  useUpdateRestaurant,
+} from "../../services/query-hooks/mutations";
 import { useRestaurantByOwner } from "../../services/query-hooks/queries";
+import { QUERY_KEYS } from "../../services/query-hooks/query-keys";
 import { isLoading as checkLoading, handleAuthError } from "../../services/utils";
 
 export function RestaurantProfile() {
   const { data: userRestaurant, isLoading: isLoadingRestaurant } = useRestaurantByOwner();
+  const createRestaurantMutation = useCreateRestaurant();
   const updateRestaurantMutation = useUpdateRestaurant();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [restaurantName, setRestaurantName] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const isCreating = !userRestaurant;
 
   // Initialize form with restaurant data
   useEffect(() => {
@@ -28,20 +37,60 @@ export function RestaurantProfile() {
     setError(null);
     setSuccess(null);
 
-    if (!userRestaurant) {
-      setError("Restaurant not found. Please create a restaurant first.");
+    if (!restaurantName.trim()) {
+      setError("Restaurant name is required.");
+      return;
+    }
+
+    if (!address.trim()) {
+      setError("Address is required.");
       return;
     }
 
     try {
-      await updateRestaurantMutation.mutateAsync({
-        restaurantId: userRestaurant.restaurantId,
-        name: restaurantName,
-        address: address,
-      });
+      if (isCreating) {
+        // Create new restaurant
+        const newRestaurant = await createRestaurantMutation.mutateAsync({
+          name: restaurantName.trim(),
+          address: address.trim(),
+        });
 
-      setSuccess("Restaurant information updated successfully!");
+        // The mutation hook already sets the query data, but we'll ensure it's refetched
+        // Wait a bit to ensure the query cache is updated
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // Refetch to ensure data is updated everywhere
+        await queryClient.refetchQueries({
+          queryKey: [QUERY_KEYS.GET_RESTAURANT_BY_OWNER],
+          exact: true,
+        });
+
+        setSuccess("Restaurant created successfully!");
+      } else {
+        // Update existing restaurant
+        await updateRestaurantMutation.mutateAsync({
+          restaurantId: userRestaurant.restaurantId,
+          name: restaurantName.trim(),
+          address: address.trim(),
+        });
+
+        // Invalidate restaurant queries to refetch
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_RESTAURANT_BY_OWNER],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_RESTAURANT, userRestaurant.restaurantId],
+        });
+
+        setSuccess("Restaurant information updated successfully!");
+      }
+
+      // Wait a bit longer to ensure query cache is fully updated before navigation
       setTimeout(() => {
+        // Force a refetch one more time before navigation to be absolutely sure
+        queryClient.refetchQueries({
+          queryKey: [QUERY_KEYS.GET_RESTAURANT_BY_OWNER],
+        });
         navigate("/restaurant-dashboard");
       }, 1500);
     } catch (err) {
@@ -61,26 +110,11 @@ export function RestaurantProfile() {
     );
   }
 
-  if (!userRestaurant) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <p className="text-gray-700 mb-6">You don't have a restaurant yet.</p>
-          <button
-            onClick={() => navigate("/restaurant-dashboard")}
-            className="bg-[#920728] text-white px-6 py-3 rounded-2xl hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium">
-            Back to Dashboard
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-4">
       <div className="w-full max-w-2xl">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
-          Edit Restaurant Profile
+          {isCreating ? "Create Restaurant" : "Edit Restaurant Profile"}
         </h1>
 
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md">
@@ -129,9 +163,17 @@ export function RestaurantProfile() {
             </button>
             <button
               type="submit"
-              disabled={updateRestaurantMutation.isPending}
+              disabled={
+                createRestaurantMutation.isPending || updateRestaurantMutation.isPending
+              }
               className="bg-[#920728] text-white px-8 py-3 rounded-2xl text-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-              {updateRestaurantMutation.isPending ? "Saving..." : "Save Changes"}
+              {createRestaurantMutation.isPending || updateRestaurantMutation.isPending
+                ? isCreating
+                  ? "Creating..."
+                  : "Saving..."
+                : isCreating
+                  ? "Create Restaurant"
+                  : "Save Changes"}
             </button>
           </div>
         </form>

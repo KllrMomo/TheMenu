@@ -7,11 +7,11 @@ interface RestaurantCardProps {
 
 export function RestaurantCard({ name, address }: RestaurantCardProps) {
   return (
-    <div className="gap-y-4">
-      <div className="bg-[#920728] text-white p-4 shadow-lg flex items-center justify-center">
-        <p className="text-white">Image not available</p>
+    <div className="">
+      <div className="bg-[#920728] text-white p-4 shadow-lg flex items-center justify-center mb-4">
+        <p className="text-white, py-20">Image not available</p>
       </div>
-      <div className="flex flex-col items-center justify-start">
+      <div className="flex flex-col items-start justify-center px-2">
         <h3 className="text-md font-bold text-gray-800 mb-2">{name}</h3>
         <p className="text-gray-700 text-sm">{address}</p>
       </div>

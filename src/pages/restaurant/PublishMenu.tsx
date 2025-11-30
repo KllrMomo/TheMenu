@@ -22,12 +22,24 @@ export function PublishMenu() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <p className="text-gray-700 mb-6">You don't have a restaurant yet.</p>
-          <button
-            onClick={() => navigate("/restaurant-dashboard")}
-            className="bg-[#920728] text-white px-6 py-3 rounded-2xl hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium">
-            Back to Dashboard
-          </button>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+            <p className="text-yellow-800 font-semibold mb-2">No Restaurant Found</p>
+            <p className="text-yellow-700 text-sm mb-4">
+              You need to create a restaurant before you can preview your menu.
+            </p>
+          </div>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => navigate("/restaurant-profile")}
+              className="bg-[#920728] text-white px-6 py-3 rounded-2xl hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium">
+              Create Restaurant
+            </button>
+            <button
+              onClick={() => navigate("/restaurant-dashboard")}
+              className="bg-gray-500 text-white px-6 py-3 rounded-2xl hover:bg-gray-600 transition font-medium">
+              Back to Dashboard
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -158,7 +170,7 @@ export function PublishMenu() {
           {/* Menu Stats */}
           <div className="bg-gray-50 rounded-lg p-6 mt-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Menu Statistics</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
                 <p className="text-3xl font-bold text-[#920728]">{foodItems.length}</p>
                 <p className="text-gray-600 text-sm">Total Items</p>
@@ -170,16 +182,6 @@ export function PublishMenu() {
               <div className="text-center">
                 <p className="text-3xl font-bold text-red-600">{outOfStockItems.length}</p>
                 <p className="text-gray-600 text-sm">Unavailable</p>
-              </div>
-              <div className="text-center">
-                <p className="text-3xl font-bold text-gray-800">
-                  {foodItems.length > 0
-                    ? formatPrice(
-                        foodItems.reduce((sum, item) => sum + item.price, 0) / foodItems.length
-                      )
-                    : "$0.00"}
-                </p>
-                <p className="text-gray-600 text-sm">Avg. Price</p>
               </div>
             </div>
           </div>

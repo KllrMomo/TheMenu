@@ -190,9 +190,18 @@ export function validateDishForm(dish: DishFormData): DishValidationResult {
 
 /**
  * Format price for display
+ * Handles both number and string inputs
  */
-export function formatPrice(price: number): string {
-  return `$${price.toFixed(2)}`;
+export function formatPrice(price: number | string): string {
+  // Convert to number if it's a string
+  const numPrice = typeof price === "string" ? parseFloat(price) : price;
+  
+  // Check if it's a valid number
+  if (isNaN(numPrice) || numPrice === null || numPrice === undefined) {
+    return "$0.00";
+  }
+  
+  return `$${numPrice.toFixed(2)}`;
 }
 
 /**

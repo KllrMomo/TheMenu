@@ -63,11 +63,8 @@ export function CustomerHomePage() {
                 <Link
                   key={restaurant.restaurantId}
                   to={`/restaurant/${restaurant.restaurantId}`}
-                  className="shrink-0">
-                  <div className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition cursor-pointer min-w-[280px]">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{restaurant.name}</h3>
-                    <p className="text-gray-700">{restaurant.address}</p>
-                  </div>
+                  className="shrink-0 min-w-[280px]">
+                  <RestaurantCard name={restaurant.name} address={restaurant.address} />
                 </Link>
               ))}
             </div>
