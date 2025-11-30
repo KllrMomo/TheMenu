@@ -43,9 +43,12 @@ export function CustomerHomePage() {
           {/* Recently Viewed */}
           <div>
             <h2 className="font-semibold text-lg mb-4 text-gray-800"> Recently Viewed</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+            <div className="flex gap-6 overflow-x-auto pb-4 mb-12 scrollbar-hide">
               {recentlyViewed.map((restaurant) => (
-                <Link key={restaurant.restaurantId} to={`/restaurant/${restaurant.restaurantId}`}>
+                <Link
+                  key={restaurant.restaurantId}
+                  to={`/restaurant/${restaurant.restaurantId}`}
+                  className="shrink-0 min-w-[280px]">
                   <RestaurantCard name={restaurant.name} address={restaurant.address} />
                 </Link>
               ))}
@@ -55,10 +58,13 @@ export function CustomerHomePage() {
           {/* Recommended For You */}
           <div>
             <h2 className="font-semibold text-lg mb-4 text-gray-800">Recommended For You</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
               {recommendedForYou.map((restaurant) => (
-                <Link key={restaurant.restaurantId} to={`/restaurant/${restaurant.restaurantId}`}>
-                  <div className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition cursor-pointer">
+                <Link
+                  key={restaurant.restaurantId}
+                  to={`/restaurant/${restaurant.restaurantId}`}
+                  className="shrink-0">
+                  <div className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition cursor-pointer min-w-[280px]">
                     <h3 className="text-xl font-bold text-gray-800 mb-2">{restaurant.name}</h3>
                     <p className="text-gray-700">{restaurant.address}</p>
                   </div>
