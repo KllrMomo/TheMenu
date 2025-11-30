@@ -27,15 +27,9 @@ export function CustomerHomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-xl md:text-3xl font-bold text-gray-800">
-          Welcome back, <span className="text-[#920728] text-2xl md:text-4xl">{username}</span>
-        </h2>
-        <Link
-          to="/customer-profile"
-          className="bg-[#920728] text-white px-6 py-3 rounded-2xl text-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer">
-          Edit Profile
-        </Link>
+      <div className="flex flex-col justify-center items-center mb-8">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-800">Welcome back,</h2>
+        <div className="text-[#920728] text-2xl md:text-4xl">{username}</div>
       </div>
 
       {isLoadingRestaurants ? (
