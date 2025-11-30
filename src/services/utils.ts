@@ -61,6 +61,10 @@ export function storeAuthData(
 ): void {
   localStorage.setItem("username", `${authResponse.user.firstName} ${authResponse.user.lastName}`);
   localStorage.setItem("userId", authResponse.user.userId);
+  if (authResponse.token) {
+    // Trim and store the token to avoid whitespace issues
+    localStorage.setItem("token", authResponse.token.trim());
+  }
   if (accountType) {
     localStorage.setItem("accountType", accountType);
   }
@@ -194,6 +198,21 @@ export function isLoading(...loadingStates: boolean[]): boolean {
  * Handle authentication error and return user-friendly message
  */
 export function handleAuthError(error: unknown): string {
+  if (error && typeof error === "object" && "response" in error) {
+    const axiosError = error as { response?: { data?: { message?: string; error?: string } } };
+    if (axiosError.response?.data?.message) {
+      return axiosError.response.data.message;
+    }
+    if (axiosError.response?.data?.error) {
+      return axiosError.response.data.error;
+    }
+
+    if (axiosError.response && "statusText" in axiosError.response) {
+      const statusText = (axiosError.response as { statusText?: string }).statusText;
+      const status = (axiosError.response as { status?: number }).status;
+      return statusText || `Error ${status}: Please check your input and try again.`;
+    }
+  }
   if (error instanceof Error) {
     return error.message;
   }

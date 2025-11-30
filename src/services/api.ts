@@ -12,6 +12,8 @@ import type {
   Restaurant,
   UpdateCartItemRequest,
   UpdateFoodItemRequest,
+  UpdateRestaurantRequest,
+  UpdateUserRequest,
   User,
 } from "./api_types";
 import api from "./axios";
@@ -32,7 +34,8 @@ export class Api {
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.REGISTER, body);
     if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
+      // Trim and store the token to avoid whitespace issues
+      localStorage.setItem("token", response.data.token.trim());
     }
     return response.data;
   }
@@ -44,7 +47,8 @@ export class Api {
     };
     const response = await api.post<AuthResponse>(ENDPOINTS.LOGIN, body);
     if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
+      // Trim and store the token to avoid whitespace issues
+      localStorage.setItem("token", response.data.token.trim());
     }
     return response.data;
   }
@@ -59,6 +63,16 @@ export class Api {
 
   static async getCurrentUser(): Promise<User> {
     const response = await api.get<User>(ENDPOINTS.GET_ACCOUNT_INFO);
+    return response.data;
+  }
+
+  static async updateUser(firstName?: string, lastName?: string, email?: string): Promise<User> {
+    const body: UpdateUserRequest = {
+      firstName,
+      lastName,
+      email,
+    };
+    const response = await api.patch<User>(ENDPOINTS.UPDATE_USER, body);
     return response.data;
   }
 
@@ -80,6 +94,34 @@ export class Api {
     };
     const response = await api.post<Restaurant>(ENDPOINTS.CREATE_RESTAURANT, body);
     return response.data;
+  }
+
+  static async updateRestaurant(id: string, name?: string, address?: string): Promise<Restaurant> {
+    const body: UpdateRestaurantRequest = {
+      name,
+      address,
+    };
+    const endpoint = ENDPOINTS.UPDATE_RESTAURANT.replace(":id", id);
+    const response = await api.patch<Restaurant>(endpoint, body);
+    return response.data;
+  }
+
+  static async getRestaurantByOwner(): Promise<Restaurant | null> {
+    try {
+      const response = await api.get<Restaurant>(ENDPOINTS.GET_RESTAURANT_BY_OWNER);
+      return response.data;
+    } catch (error) {
+      // Handle 404 as null (user doesn't have a restaurant yet)
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        (error as { response?: { status?: number } }).response?.status === 404
+      ) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   static async listFoodItemsByRestaurant(restaurantId: string): Promise<FoodItem[]> {
@@ -124,6 +166,11 @@ export class Api {
     const endpoint = ENDPOINTS.UPDATE_FOOD_ITEM.replace(":id", id);
     const response = await api.patch<FoodItem>(endpoint, body);
     return response.data;
+  }
+
+  static async deleteFoodItem(id: string): Promise<void> {
+    const endpoint = ENDPOINTS.DELETE_FOOD_ITEM.replace(":id", id);
+    await api.delete(endpoint);
   }
 
   static async getCart(): Promise<Cart | null> {

@@ -1,8 +1,11 @@
 export { useLogin } from "./use-login";
 export { useSignup } from "./use-signup";
 export { useCreateRestaurant } from "./use-create-restaurant";
+export { useUpdateRestaurant } from "./use-update-restaurant";
 export { useCreateFoodItem } from "./use-create-food-item";
 export { useUpdateFoodItem } from "./use-update-food-item";
+export { useDeleteFoodItem } from "./use-delete-food-item";
+export { useUpdateUser } from "./use-update-user";
 export { useAddCartItem } from "./use-add-cart-item";
 export { useUpdateCartItem } from "./use-update-cart-item";
 export { useRemoveCartItem } from "./use-remove-cart-item";

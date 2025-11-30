@@ -10,10 +10,22 @@ function createApi(baseURL: string) {
 
   api.interceptors.request.use(
     (config) => {
-      // Add authentication token if available
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      // Don't send token for public endpoints that don't require authentication
+      const publicEndpoints = ["/api/restaurants"];
+      const isPublicEndpoint = publicEndpoints.some((endpoint) => 
+        config.url?.includes(endpoint) && config.method?.toLowerCase() === "get"
+      );
+
+      // Add authentication token if available and endpoint is not public
+      if (!isPublicEndpoint) {
+        const token = localStorage.getItem("token");
+        if (token) {
+          // Trim any whitespace from the token
+          const trimmedToken = token.trim();
+          if (trimmedToken) {
+            config.headers.Authorization = `Bearer ${trimmedToken}`;
+          }
+        }
       }
       return config;
     },

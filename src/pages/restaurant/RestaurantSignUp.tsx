@@ -1,9 +1,7 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useCreateRestaurant, useSignup } from "../../services/query-hooks/mutations";
-import { QUERY_KEYS } from "../../services/query-hooks/query-keys";
 import { isLoading as checkLoading, handleAuthError, storeAuthData } from "../../services/utils";
 
 export function RestaurantSignUp() {
@@ -17,7 +15,6 @@ export function RestaurantSignUp() {
   const navigate = useNavigate();
   const signupMutation = useSignup();
   const createRestaurantMutation = useCreateRestaurant();
-  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,9 +37,9 @@ export function RestaurantSignUp() {
         address,
       });
 
-      // Invalidate queries to refetch
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_CURRENT_USER] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_RESTAURANTS] });
+      // Small delay to ensure token is fully available before navigation
+      // This prevents 401 errors when the dashboard tries to fetch data
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Navigate to restaurant dashboard
       navigate("/restaurant-dashboard");
@@ -57,7 +54,7 @@ export function RestaurantSignUp() {
     <div className="px-4 py-6">
       <br />
       <br />
-      <h1 className="text-5xl md:text-6xl font-bold text-gray-800 text-center mb-12">
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
         Hello! Register your
         <br />
         Restaurant.

@@ -44,6 +44,11 @@ export interface CreateRestaurantRequest {
   address: string;
 }
 
+export interface UpdateRestaurantRequest {
+  name?: string;
+  address?: string;
+}
+
 // Food Item Types
 export interface FoodItem {
   foodId: string;
@@ -67,6 +72,12 @@ export interface UpdateFoodItemRequest {
   name?: string;
   price?: number;
   inStock?: boolean;
+}
+
+export interface UpdateUserRequest {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
 
 // Shopping Cart Types
