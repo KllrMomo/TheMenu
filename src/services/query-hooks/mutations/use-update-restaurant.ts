@@ -17,17 +17,18 @@ export const useUpdateRestaurant = () => {
     mutationFn: ({ restaurantId, ...data }) =>
       Api.updateRestaurant(restaurantId, data.name, data.address),
     onSuccess: (data) => {
-      // Invalidate the specific restaurant
+      // Directly set the updated restaurant data in cache
+      // This ensures the UI updates immediately without waiting for refetch
+      queryClient.setQueryData([QUERY_KEYS.GET_RESTAURANT_BY_OWNER], data);
+      queryClient.setQueryData([QUERY_KEYS.GET_RESTAURANT, data.restaurantId], data);
+
+      // Also invalidate to ensure all related queries are updated
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RESTAURANT, data.restaurantId],
       });
-
-      // Invalidate restaurant by owner query
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RESTAURANT_BY_OWNER],
       });
-
-      // Invalidate restaurants list
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RESTAURANTS],
       });

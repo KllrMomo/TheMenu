@@ -11,10 +11,12 @@ function createApi(baseURL: string) {
   api.interceptors.request.use(
     (config) => {
       // Don't send token for public endpoints that don't require authentication
-      const publicEndpoints = ["/api/restaurants"];
-      const isPublicEndpoint = publicEndpoints.some(
-        (endpoint) => config.url?.includes(endpoint) && config.method?.toLowerCase() === "get"
-      );
+      // Only match exact endpoint - /api/restaurants (list all restaurants)
+      // NOT /api/restaurants/me or /api/restaurants/:id which require auth
+      // Check if URL exactly matches /api/restaurants (may have query params)
+      const urlPath = config.url?.split("?")[0]; // Remove query params for comparison
+      const isPublicEndpoint =
+        urlPath === "/api/restaurants" && config.method?.toLowerCase() === "get";
 
       // Add authentication token if available and endpoint is not public
       if (!isPublicEndpoint) {
@@ -24,20 +26,7 @@ function createApi(baseURL: string) {
           const trimmedToken = token.trim();
           if (trimmedToken) {
             config.headers.Authorization = `Bearer ${trimmedToken}`;
-          } else {
-            // Token exists but is empty/whitespace - log warning
-            console.warn("Token found in localStorage but is empty or whitespace only", {
-              url: config.url,
-              method: config.method,
-            });
           }
-        } else {
-          // Token is missing for authenticated endpoint - log warning
-          // Note: We don't throw here as some endpoints might handle 401 gracefully
-          console.warn("No authentication token found for authenticated endpoint", {
-            url: config.url,
-            method: config.method,
-          });
         }
       }
       return config;

@@ -1,58 +1,90 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import type { Restaurant } from "../../services/api_types";
 import { useRestaurantByOwner } from "../../services/query-hooks/queries";
-import { QUERY_KEYS } from "../../services/query-hooks/query-keys";
 import { isLoading as checkLoading } from "../../services/utils";
 
 export function RestaurantHomePage() {
-  const { data: userRestaurant, isLoading: isLoadingRestaurant, refetch } = useRestaurantByOwner();
-  const queryClient = useQueryClient();
+  const {
+    data: userRestaurant,
+    isLoading: isLoadingRestaurant,
+    error: restaurantError,
+    isError,
+  } = useRestaurantByOwner();
   const loading = checkLoading(isLoadingRestaurant);
-
-  // Refetch restaurant data when component mounts, but only if we don't have valid data
-  useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem("token");
-    if (!token) {
-      return; // Don't try to fetch if not authenticated
-    }
-
-    // Get the current cached data
-    const cachedData = queryClient.getQueryData<Restaurant | null>([
-      QUERY_KEYS.GET_RESTAURANT_BY_OWNER,
-    ]);
-
-    // Only clear cache and refetch if:
-    // 1. We have no cached data, OR
-    // 2. We have cached null (from a previous 404)
-    // If we have valid restaurant data, just do a gentle refetch without clearing
-    if (cachedData === null || cachedData === undefined) {
-      // Remove the query from cache to clear stale null values
-      queryClient.removeQueries({
-        queryKey: [QUERY_KEYS.GET_RESTAURANT_BY_OWNER],
-        exact: true,
-      });
-
-      // Small delay to ensure removal is processed, then refetch
-      const timeoutId = setTimeout(() => {
-        refetch({ cancelRefetch: false });
-      }, 100);
-
-      return () => clearTimeout(timeoutId);
-    } else {
-      // We have valid data, just do a background refetch without clearing cache
-      // This ensures we have fresh data but don't lose what we have
-      refetch();
-    }
-  }, [refetch, queryClient]);
 
   if (loading) {
     return (
       <div className="px-4 py-6 flex flex-col items-center justify-center">
         <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
+  // Show error state if there's an error
+  if (isError && restaurantError) {
+    // Check if it's a 401 error (authentication issue)
+    const is401 =
+      restaurantError &&
+      typeof restaurantError === "object" &&
+      "response" in restaurantError &&
+      (restaurantError as { response?: { status?: number } }).response?.status === 401;
+
+    if (is401) {
+      return (
+        <div className="px-4 py-6 flex flex-col items-center justify-center">
+          <div className="text-center max-w-md">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-4">
+              <p className="text-red-800 font-semibold mb-2">Authentication Error</p>
+              <p className="text-red-700 text-sm mb-4">
+                Your session may have expired or your token is invalid. Please log in again.
+              </p>
+              <p className="text-red-600 text-xs mb-4">
+                Status: 401 Unauthorized - The backend rejected your authentication token.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/restaurant-login"
+                className="bg-[#920728] text-white px-6 py-3 rounded-2xl hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium text-center">
+                Log In Again
+              </Link>
+              <button
+                onClick={() => {
+                  // Clear token and reload
+                  localStorage.removeItem("token");
+                  window.location.reload();
+                }}
+                className="bg-gray-500 text-white px-6 py-3 rounded-2xl hover:bg-gray-600 transition font-medium">
+                Clear Session & Reload
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Other errors
+    const errorMessage =
+      restaurantError && typeof restaurantError === "object" && "message" in restaurantError
+        ? (restaurantError as { message?: string }).message
+        : "An error occurred while loading your restaurant";
+
+    return (
+      <div className="px-4 py-6 flex flex-col items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-4">
+            <p className="text-red-800 font-semibold mb-2">Error Loading Restaurant</p>
+            <p className="text-red-700 text-sm mb-4">{errorMessage}</p>
+            <p className="text-red-600 text-xs">
+              Check the browser console for more details. This might be a backend issue.
+            </p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#920728] text-white px-6 py-3 rounded-2xl hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium">
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
