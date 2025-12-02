@@ -1,5 +1,3 @@
-import React from "react";
-
 interface RestaurantCardProps {
   name: string;
   address: string;

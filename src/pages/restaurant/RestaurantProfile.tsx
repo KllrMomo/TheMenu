@@ -1,11 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 
-import {
-  useCreateRestaurant,
-  useUpdateRestaurant,
-} from "../../services/query-hooks/mutations";
+import { useCreateRestaurant, useUpdateRestaurant } from "../../services/query-hooks/mutations";
 import { useRestaurantByOwner } from "../../services/query-hooks/queries";
 import { QUERY_KEYS } from "../../services/query-hooks/query-keys";
 import { isLoading as checkLoading, handleAuthError } from "../../services/utils";
@@ -50,7 +47,7 @@ export function RestaurantProfile() {
     try {
       if (isCreating) {
         // Create new restaurant
-        const newRestaurant = await createRestaurantMutation.mutateAsync({
+        await createRestaurantMutation.mutateAsync({
           name: restaurantName.trim(),
           address: address.trim(),
         });
@@ -121,7 +118,6 @@ export function RestaurantProfile() {
       />
 
       <div className="w-full max-w-2xl">
-        
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
           {isCreating ? "Create Restaurant" : "Edit Restaurant Profile"}
         </h1>
@@ -172,9 +168,7 @@ export function RestaurantProfile() {
             </button>
             <button
               type="submit"
-              disabled={
-                createRestaurantMutation.isPending || updateRestaurantMutation.isPending
-              }
+              disabled={createRestaurantMutation.isPending || updateRestaurantMutation.isPending}
               className="bg-[#920728] text-white px-8 py-3 rounded-2xl text-lg shadow-md hover:bg-[#eae4e4] hover:text-[#920728] transition font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
               {createRestaurantMutation.isPending || updateRestaurantMutation.isPending
                 ? isCreating
@@ -188,12 +182,12 @@ export function RestaurantProfile() {
         </form>
 
         <div className="text-center mt-8">
-        <Link
-          to="/restaurant-dashboard"
-          className="text-[#920728] underline hover:text-[#6e0520] font-medium">
-          ← Back to Dashboard
-        </Link>
-      </div>
+          <Link
+            to="/restaurant-dashboard"
+            className="text-[#920728] underline hover:text-[#6e0520] font-medium">
+            ← Back to Dashboard
+          </Link>
+        </div>
       </div>
     </div>
   );
