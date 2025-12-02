@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -111,8 +111,17 @@ export function RestaurantProfile() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-10 px-4">
+    <div className="flex flex-col items-center py-10 px-4">
+      {/* BACKGROUND IMAGE */}
+      <img
+        src="src/assets/images/back.png"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 pointer-events-none select-none"
+        style={{ minHeight: "100%" }}
+      />
+
       <div className="w-full max-w-2xl">
+        
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
           {isCreating ? "Create Restaurant" : "Edit Restaurant Profile"}
         </h1>
@@ -178,13 +187,13 @@ export function RestaurantProfile() {
           </div>
         </form>
 
-        <div className="text-center mt-6">
-          <button
-            onClick={() => navigate("/restaurant-dashboard")}
-            className="text-[#920728] underline hover:text-[#6e0520]">
-            Back to Dashboard
-          </button>
-        </div>
+        <div className="text-center mt-8">
+        <Link
+          to="/restaurant-dashboard"
+          className="text-[#920728] underline hover:text-[#6e0520] font-medium">
+          ← Back to Dashboard
+        </Link>
+      </div>
       </div>
     </div>
   );
