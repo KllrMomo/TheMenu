@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
+import logoImage from "../assets/images/logo.png";
 import { useCurrentUser } from "../services/query-hooks/queries";
 import {
   getAccountType,
@@ -52,7 +53,7 @@ export function Layout() {
           {/* Logo */}
           <Link to="/">
             <img
-              src="/src/assets/images/logo.png"
+              src={logoImage}
               alt="The Menu Logo"
               className="h-28 w-28 object-contain rounded-full"
             />

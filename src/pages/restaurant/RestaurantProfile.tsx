@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import backImage from "../../assets/images/back.png";
 import { useCreateRestaurant, useUpdateRestaurant } from "../../services/query-hooks/mutations";
 import { useRestaurantByOwner } from "../../services/query-hooks/queries";
 import { QUERY_KEYS } from "../../services/query-hooks/query-keys";
@@ -111,7 +112,7 @@ export function RestaurantProfile() {
     <div className="flex flex-col items-center py-10 px-4">
       {/* BACKGROUND IMAGE */}
       <img
-        src="src/assets/images/back.png"
+        src={backImage}
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 pointer-events-none select-none"
         style={{ minHeight: "100%" }}

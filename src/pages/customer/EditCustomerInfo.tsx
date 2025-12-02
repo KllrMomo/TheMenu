@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import backgroundImage from "../../assets/images/background.png";
 import { useUpdateUser } from "../../services/query-hooks/mutations";
 import { useCurrentUser } from "../../services/query-hooks/queries";
 import { isLoading as checkLoading, handleAuthError } from "../../services/utils";
@@ -62,7 +63,7 @@ export function EditCustomerInfo() {
     <div className="max-w-2xl mx-auto px-4 py-10">
       {/* BACKGROUND IMAGE */}
       <img
-        src="src\\assets\\images\\background.png"
+        src={backgroundImage}
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 pointer-events-none select-none"
         style={{ minHeight: "100%" }}

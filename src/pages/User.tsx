@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 
+import backImage from "../assets/images/back.png";
+
 export function User() {
   return (
     <div className="px-4 py-6">
       {/* BACKGROUND IMAGE */}
       <img
-        src="src/assets/images/back.png"
+        src={backImage}
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 pointer-events-none select-none"
         style={{ minHeight: "100%" }}
