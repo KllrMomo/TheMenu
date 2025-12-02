@@ -60,7 +60,15 @@ export function EditCustomerInfo() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
+      {/* BACKGROUND IMAGE */}
+      <img
+        src="src\\assets\\images\\background.png"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 pointer-events-none select-none"
+        style={{ minHeight: "100%" }}
+      />
+
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-6">
         Edit Profile
       </h1>
 
